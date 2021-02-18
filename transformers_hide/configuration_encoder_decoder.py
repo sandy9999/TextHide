@@ -80,7 +80,7 @@ class EncoderDecoderConfig(PretrainedConfig):
         decoder_config = kwargs.pop("decoder")
         decoder_model_type = decoder_config.pop("model_type")
 
-        from ..auto.configuration_auto import AutoConfig
+        from .configuration_auto import AutoConfig
 
         self.encoder = AutoConfig.for_model(encoder_model_type, **encoder_config)
         self.decoder = AutoConfig.for_model(decoder_model_type, **decoder_config)
