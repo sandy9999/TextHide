@@ -25,7 +25,7 @@ from .configuration_bert import BERT_PRETRAINED_CONFIG_ARCHIVE_MAP, BertConfig
 # from .configuration_ctrl import CTRL_PRETRAINED_CONFIG_ARCHIVE_MAP, CTRLConfig
 # from .configuration_distilbert import DISTILBERT_PRETRAINED_CONFIG_ARCHIVE_MAP, DistilBertConfig
 # from .configuration_electra import ELECTRA_PRETRAINED_CONFIG_ARCHIVE_MAP, ElectraConfig
-# from .configuration_encoder_decoder import EncoderDecoderConfig
+from .configuration_encoder_decoder import EncoderDecoderConfig
 # from .configuration_flaubert import FLAUBERT_PRETRAINED_CONFIG_ARCHIVE_MAP, FlaubertConfig
 # from .configuration_gpt2 import GPT2_PRETRAINED_CONFIG_ARCHIVE_MAP, GPT2Config
 # from .configuration_longformer import LONGFORMER_PRETRAINED_CONFIG_ARCHIVE_MAP, LongformerConfig
@@ -100,7 +100,7 @@ CONFIG_MAPPING = OrderedDict(
         # ("xlm", XLMConfig,),
         # ("ctrl", CTRLConfig,),
         # ("electra", ElectraConfig,),
-        # ("encoder-decoder", EncoderDecoderConfig,),
+        ("encoder-decoder", EncoderDecoderConfig,),
     ]
 )
 

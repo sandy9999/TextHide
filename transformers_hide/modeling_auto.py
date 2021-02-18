@@ -28,7 +28,7 @@ from .configuration_auto import (
     # CTRLConfig,
     # DistilBertConfig,
     # ElectraConfig,
-    # EncoderDecoderConfig,
+    EncoderDecoderConfig,
     # FlaubertConfig,
     # GPT2Config,
     # LongformerConfig,
@@ -98,7 +98,7 @@ from .modeling_bert import (
 #     ElectraForTokenClassification,
 #     ElectraModel,
 # )
-# from .modeling_encoder_decoder import EncoderDecoderModel
+from .modeling_encoder_decoder import EncoderDecoderModel
 # from .modeling_flaubert import (
 #     FlaubertForMultipleChoice,
 #     FlaubertForQuestionAnsweringSimple,
@@ -246,7 +246,7 @@ MODEL_WITH_LM_HEAD_MAPPING = OrderedDict(
         # (XLMConfig, XLMWithLMHeadModel),
         # (CTRLConfig, CTRLLMHeadModel),
         # (ElectraConfig, ElectraForMaskedLM),
-        # (EncoderDecoderConfig, EncoderDecoderModel),
+        (EncoderDecoderConfig, EncoderDecoderModel),
         # (ReformerConfig, ReformerModelWithLMHead),
     ]
 )
@@ -293,7 +293,7 @@ MODEL_FOR_SEQ_TO_SEQ_CAUSAL_LM_MAPPING = OrderedDict(
         # (MarianConfig, MarianMTModel),
         # (MBartConfig, MBartForConditionalGeneration),
         # (BartConfig, BartForConditionalGeneration),
-        # (EncoderDecoderConfig, EncoderDecoderModel),
+        (EncoderDecoderConfig, EncoderDecoderModel),
     ]
 )
 
