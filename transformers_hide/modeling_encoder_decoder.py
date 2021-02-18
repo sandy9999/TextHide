@@ -356,11 +356,9 @@ class EncoderDecoderModel(PreTrainedModel):
         decoder_input_ids=None,
         decoder_attention_mask=None,
         encoder_outputs=None,
-        past_key_values=None,
         inputs_embeds=None,
         decoder_inputs_embeds=None,
         labels=None,
-        use_cache=None,
         output_attentions=None,
         output_hidden_states=None,
         return_dict=None,
@@ -424,8 +422,6 @@ class EncoderDecoderModel(PreTrainedModel):
             labels=labels,
             output_attentions=output_attentions,
             output_hidden_states=output_hidden_states,
-            use_cache=use_cache,
-            past_key_values=past_key_values,
             return_dict=return_dict,
             **kwargs_decoder,
         )
@@ -436,7 +432,6 @@ class EncoderDecoderModel(PreTrainedModel):
         return Seq2SeqLMOutput(
             loss=decoder_outputs.loss,
             logits=decoder_outputs.logits,
-            past_key_values=decoder_outputs.past_key_values,
             decoder_hidden_states=decoder_outputs.hidden_states,
             decoder_attentions=decoder_outputs.attentions,
             cross_attentions=decoder_outputs.cross_attentions,
@@ -446,7 +441,7 @@ class EncoderDecoderModel(PreTrainedModel):
         )
 
     def prepare_inputs_for_generation(
-        self, input_ids, past=None, attention_mask=None, use_cache=None, encoder_outputs=None, **kwargs
+        self, input_ids, past=None, attention_mask=None, encoder_outputs=None, **kwargs
     ):
         decoder_inputs = self.decoder.prepare_inputs_for_generation(input_ids, past=past)
         decoder_attention_mask = decoder_inputs["attention_mask"] if "attention_mask" in decoder_inputs else None
@@ -455,8 +450,6 @@ class EncoderDecoderModel(PreTrainedModel):
             "decoder_attention_mask": decoder_attention_mask,
             "decoder_input_ids": decoder_inputs["input_ids"],
             "encoder_outputs": encoder_outputs,
-            "past_key_values": decoder_inputs["past_key_values"],
-            "use_cache": use_cache,
         }
         return input_dict
 
