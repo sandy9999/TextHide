@@ -347,7 +347,7 @@ class EncoderDecoderModel(PreTrainedModel):
         config = EncoderDecoderConfig.from_encoder_decoder_configs(encoder.config, decoder.config, **kwargs)
         return cls(encoder=encoder, decoder=decoder, config=config)
 
-    @add_start_docstrings_to_model_callable(ENCODER_DECODER_INPUTS_DOCSTRING)
+    @add_start_docstrings_to_callable(ENCODER_DECODER_INPUTS_DOCSTRING)
     @replace_return_docstrings(output_type=Seq2SeqLMOutput, config_class=_CONFIG_FOR_DOC)
     def forward(
         self,
