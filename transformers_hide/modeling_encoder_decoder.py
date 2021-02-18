@@ -25,7 +25,7 @@ import logging
 from .configuration_encoder_decoder import EncoderDecoderConfig
 
 
-logger = logging.get_logger(__name__)
+logger = logging.getLogger(__name__)
 
 _CONFIG_FOR_DOC = "EncoderDecoderConfig"
 

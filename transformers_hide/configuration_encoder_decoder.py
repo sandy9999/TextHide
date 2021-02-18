@@ -20,8 +20,7 @@ from .configuration_utils import PretrainedConfig
 import logging
 
 
-logger = logging.get_logger(__name__)
-
+logger = logging.getLogger(__name__)
 
 class EncoderDecoderConfig(PretrainedConfig):
     r"""
