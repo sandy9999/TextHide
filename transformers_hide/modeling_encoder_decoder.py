@@ -17,11 +17,11 @@
 
 from typing import Optional
 
-from ...configuration_utils import PretrainedConfig
-from ...file_utils import add_start_docstrings, add_start_docstrings_to_model_forward, replace_return_docstrings
-from ...modeling_outputs import Seq2SeqLMOutput
-from ...modeling_utils import PreTrainedModel
-from ...utils import logging
+from .configuration_utils import PretrainedConfig
+from .file_utils import add_start_docstrings, add_start_docstrings_to_model_forward, replace_return_docstrings
+from .modeling_outputs import Seq2SeqLMOutput
+from .modeling_utils import PreTrainedModel
+import logging
 from .configuration_encoder_decoder import EncoderDecoderConfig
 
 
