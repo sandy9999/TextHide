@@ -1353,7 +1353,7 @@ class BertForSequenceClassification(BertPreTrainedModel):
         self.init_weights()
 
         self.generate_mask_pool()
-        print('TextHide parameters:', self.num_sigma, self.num_k)
+        print('TextHide parameters:', self.num_sigma, self.num_k)   
 
     @add_start_docstrings_to_callable(BERT_INPUTS_DOCSTRING.format("(batch_size, sequence_length)"))
     @add_code_sample_docstrings(
@@ -1401,7 +1401,11 @@ class BertForSequenceClassification(BertPreTrainedModel):
             return_dict=return_dict,
         )
 
+        print("Outputs here")
+        print(outputs)
         pooled_output = outputs[1]
+        print("Pooled output here")
+        print(pooled_output)
 
         # Inter-TextHide support
         pooled_output_pub = None
