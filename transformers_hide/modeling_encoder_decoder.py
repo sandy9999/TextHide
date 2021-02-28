@@ -23,7 +23,7 @@ from .modeling_outputs import Seq2SeqLMOutput
 from .modeling_utils import PreTrainedModel
 import logging
 from .configuration_encoder_decoder import EncoderDecoderConfig
-
+from instahide import *
 
 logger = logging.getLogger(__name__)
 
