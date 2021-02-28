@@ -1401,11 +1401,7 @@ class BertForSequenceClassification(BertPreTrainedModel):
             return_dict=return_dict,
         )
 
-        print("Outputs here")
-        print(outputs)
         pooled_output = outputs[1]
-        print("Pooled output here")
-        print(pooled_output)
 
         # Inter-TextHide support
         pooled_output_pub = None
