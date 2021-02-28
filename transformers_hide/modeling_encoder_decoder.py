@@ -147,6 +147,27 @@ class EncoderDecoderModel(PreTrainedModel):
     config_class = EncoderDecoderConfig
     base_model_prefix = "encoder_decoder"
 
+    def generate_mask_pool(self):
+        if self.num_sigma <= 0:
+            return
+        np.random.seed(7)
+        size = [self.num_sigma, 768]
+        self.mask_pool = torch.randint(2, size=size) * 2 - 1
+
+    def apply_mask(self, input_ids):
+        if self.num_sigma == 0:
+            return input_ids
+        elif self.num_sigma == -1:
+            mask_pad = torch.randint(
+                2, size=input_ids.shape) * 2 - 1       # Random sign
+            input_ids = input_ids * mask_pad.float().to(device)
+        else:
+            l = len(input_ids)
+            lst = np.random.randint(self.num_sigma, size=l)
+            mask_pad = torch.stack([self.mask_pool[i] for i in lst]).to(device)
+            input_ids = input_ids * mask_pad.float()
+        return input_ids
+
     def __init__(
         self,
         config: Optional[PretrainedConfig] = None,
@@ -177,6 +198,18 @@ class EncoderDecoderModel(PreTrainedModel):
 
         self.encoder = encoder
         self.decoder = decoder
+
+        #extra stuff starts
+        self.num_sigma = config.num_sigma
+        self.num_k = config.num_k
+        self.small_cls = config.small_cls
+
+        self.classifier = BertClassificationHead(config, small_cls=self.small_cls)
+
+        self.generate_mask_pool()
+        print('TextHide parameters:', self.num_sigma, self.num_k)
+        #extra stuff ends
+
         assert (
             self.encoder.get_output_embeddings() is None
         ), "The encoder {} should not have a LM Head. Please use a model without LM Head"
@@ -412,6 +445,14 @@ class EncoderDecoderModel(PreTrainedModel):
 
         encoder_hidden_states = encoder_outputs[0]
 
+        #Extra stuff starts
+        if labels is not None:
+            encoder_hidden_states, mix_labels, lams = mixup(
+                encoder_hidden_states, labels, k=self.num_k)
+
+        encoder_hidden_states = self.apply_mask(encoder_hidden_states)
+        #Extra stuff ends
+
         # Decode
         decoder_outputs = self.decoder(
             input_ids=decoder_input_ids,
@@ -419,7 +460,7 @@ class EncoderDecoderModel(PreTrainedModel):
             encoder_hidden_states=encoder_hidden_states,
             encoder_attention_mask=attention_mask,
             inputs_embeds=decoder_inputs_embeds,
-            labels=labels,
+            labels=mix_labels,
             output_attentions=output_attentions,
             output_hidden_states=output_hidden_states,
             return_dict=return_dict,
