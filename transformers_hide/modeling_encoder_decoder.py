@@ -442,8 +442,10 @@ class EncoderDecoderModel(PreTrainedModel):
             )
 
         print("Encoder outputs before: " + str(encoder_outputs))
+        print("Shape of encoder outputs: " + str(encoder_outputs.shape))
         encoder_hidden_states = encoder_outputs[0]
         print("Encoder hidden states: " + str(encoder_hidden_states))
+        print("Shape of encoder hidden states: " + str(encoder_hidden_states.shape))
 
         #Extra stuff starts
         if labels is not None:

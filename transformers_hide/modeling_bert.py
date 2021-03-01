@@ -1402,8 +1402,10 @@ class BertForSequenceClassification(BertPreTrainedModel):
         )
 
         print("Output Before: " + str(outputs))
+        print("Shape of Output Before: " + str(outputs.shape))
         pooled_output = outputs[1]
         print("Pooled Output After: " + str(pooled_output))
+        print("Shape of Pooled Output After: " + str(pooled_output.shape))
 
         # Inter-TextHide support
         pooled_output_pub = None
