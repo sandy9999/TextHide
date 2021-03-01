@@ -441,7 +441,9 @@ class EncoderDecoderModel(PreTrainedModel):
                 **kwargs_encoder,
             )
 
+        print("Encoder outputs before: " + str(encoder_outputs))
         encoder_hidden_states = encoder_outputs[0]
+        print("Encoder hidden states: " + str(encoder_hidden_states))
 
         #Extra stuff starts
         if labels is not None:
@@ -455,10 +457,10 @@ class EncoderDecoderModel(PreTrainedModel):
         decoder_outputs = self.decoder(
             input_ids=decoder_input_ids,
             attention_mask=decoder_attention_mask,
-            encoder_hidden_states=encoder_hidden_states,
+            encoder_hidden_states=encoder_hidden_states,#the new encoder_hidden_states
             encoder_attention_mask=attention_mask,
             inputs_embeds=decoder_inputs_embeds,
-            labels=mix_labels,
+            labels=mix_labels,#Note extra change here
             output_attentions=output_attentions,
             output_hidden_states=output_hidden_states,
             return_dict=return_dict,
