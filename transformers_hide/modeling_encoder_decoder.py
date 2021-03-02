@@ -467,7 +467,7 @@ class EncoderDecoderModel(PreTrainedModel):
             encoder_hidden_states=encoder_hidden_states,
             encoder_attention_mask=attention_mask,
             inputs_embeds=decoder_inputs_embeds,
-            labels=labels#mix_labels,#Note extra change here
+            labels=labels,#mix_labels,#Note extra change here
             output_attentions=output_attentions,
             output_hidden_states=output_hidden_states,
             return_dict=return_dict,
@@ -475,7 +475,7 @@ class EncoderDecoderModel(PreTrainedModel):
         )
 
         print("Decoder outputs: " + str(decoder_outputs))
-        
+
         '''
         #extra stuff starts
         logits = self.classifier(encoder_outputs[1])
