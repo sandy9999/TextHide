@@ -205,7 +205,7 @@ class EncoderDecoderModel(PreTrainedModel):
         self.num_k = config.num_k
         self.small_cls = config.small_cls
 
-        self.classifier = BertClassificationHead(config, small_cls=self.small_cls)
+        self.classifier = BertClassificationHead(encoder.config, small_cls=self.small_cls)
 
         self.generate_mask_pool()
         print('TextHide parameters:', self.num_sigma, self.num_k)
