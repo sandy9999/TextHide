@@ -204,6 +204,8 @@ class EncoderDecoderModel(PreTrainedModel):
         self.num_k = config.num_k
         self.small_cls = config.small_cls
 
+        self.classifier = BertClassificationHead(config, small_cls=self.small_cls)
+
         self.generate_mask_pool()
         print('TextHide parameters:', self.num_sigma, self.num_k)
         #extra stuff ends
@@ -449,17 +451,17 @@ class EncoderDecoderModel(PreTrainedModel):
 
         #Extra stuff starts
         if labels is not None:
-            encoder_hidden_states, mix_labels, lams = mixup(
-                encoder_hidden_states, labels, k=self.num_k)
+            encoder_outputs[1], mix_labels, lams = mixup(
+                encoder_outputs[1], labels, k=self.num_k)
 
-        encoder_hidden_states = self.apply_mask(encoder_hidden_states)
+        encoder_outputs[1] = self.apply_mask(encoder_outputs[1])
         #Extra stuff ends
 
         # Decode
         decoder_outputs = self.decoder(
             input_ids=decoder_input_ids,
             attention_mask=decoder_attention_mask,
-            encoder_hidden_states=encoder_hidden_states,#the new encoder_hidden_states
+            encoder_hidden_states=encoder_hidden_states,
             encoder_attention_mask=attention_mask,
             inputs_embeds=decoder_inputs_embeds,
             labels=mix_labels,#Note extra change here
@@ -469,8 +471,24 @@ class EncoderDecoderModel(PreTrainedModel):
             **kwargs_decoder,
         )
 
+        #extra stuff starts
+        logits = self.classifier(encoder_outputs[1])
+
+        loss = None
+        if labels is not None:
+            if self.num_labels == 1:
+                #  We are doing regression
+                loss_fct = MSELoss()
+                # loss = loss_fct(logits.view(-1), labels.view(-1)) # commented this since mixup_criterion() has incorporated this function
+            else:
+                loss_fct = CrossEntropyLoss()
+                # loss = loss_fct(logits.view(-1, self.num_labels), labels.view(-1)) # commented this since mixup_criterion() has incorporated this function
+            loss = mixup_criterion(
+                loss_fct, logits, mix_labels, lams, self.num_labels)
+        #extra stuff ends
+
         if not return_dict:
-            return decoder_outputs + encoder_outputs
+            return decoder_outputs + encoder_outputs #the new encoder_outputs
 
         return Seq2SeqLMOutput(
             loss=decoder_outputs.loss,
