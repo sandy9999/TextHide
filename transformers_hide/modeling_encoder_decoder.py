@@ -21,6 +21,7 @@ from .configuration_utils import PretrainedConfig
 from .file_utils import add_start_docstrings, add_start_docstrings_to_callable, replace_return_docstrings
 from .modeling_outputs import Seq2SeqLMOutput
 from .modeling_utils import PreTrainedModel
+from .modeling_bert import BertClassificationHead
 import logging
 from .configuration_encoder_decoder import EncoderDecoderConfig
 from instahide import *
