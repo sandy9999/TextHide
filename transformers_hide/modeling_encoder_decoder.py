@@ -205,7 +205,7 @@ class EncoderDecoderModel(PreTrainedModel):
         self.num_k = config.num_k
         self.small_cls = config.small_cls
 
-        self.classifier = BertClassificationHead(encoder.config, small_cls=self.small_cls)
+        #self.classifier = BertClassificationHead(config, small_cls=self.small_cls)
 
         self.generate_mask_pool()
         print('TextHide parameters:', self.num_sigma, self.num_k)
@@ -471,7 +471,7 @@ class EncoderDecoderModel(PreTrainedModel):
             return_dict=return_dict,
             **kwargs_decoder,
         )
-
+        '''
         #extra stuff starts
         logits = self.classifier(encoder_outputs[1])
 
@@ -487,6 +487,7 @@ class EncoderDecoderModel(PreTrainedModel):
             loss = mixup_criterion(
                 loss_fct, logits, mix_labels, lams, self.num_labels)
         #extra stuff ends
+        '''
 
         if not return_dict:
             return decoder_outputs + encoder_outputs #the new encoder_outputs
