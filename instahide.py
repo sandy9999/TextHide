@@ -44,6 +44,7 @@ def vec_mul_ten(vec, tensor):
 
 
 def mixup(embeds, label, k, embeds_help=None):
+    print("Label: " + str(label))
     batch_size = embeds.size()[0]
     lams = np.random.normal(0, 1, size=(batch_size, k))
     for i in range(batch_size):
@@ -59,4 +60,5 @@ def mixup(embeds, label, k, embeds_help=None):
         else:
             mixed_x += vec_mul_ten(lams[:, i], embeds[index, :])
         ys.append(label[index])
+    print("Mixed Labels: " + str(ys))
     return mixed_x, ys, lams
