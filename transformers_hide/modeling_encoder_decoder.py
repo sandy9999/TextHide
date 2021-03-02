@@ -450,6 +450,7 @@ class EncoderDecoderModel(PreTrainedModel):
         print("Encoder hidden states: " + str(encoder_hidden_states))
         print("Shape of encoder hidden states: " + str(encoder_hidden_states.shape))
 
+        '''
         #Extra stuff starts
         if labels is not None:
             encoder_outputs[1], mix_labels, lams = mixup(
@@ -457,6 +458,7 @@ class EncoderDecoderModel(PreTrainedModel):
 
         encoder_outputs[1] = self.apply_mask(encoder_outputs[1])
         #Extra stuff ends
+        '''
 
         # Decode
         decoder_outputs = self.decoder(
@@ -465,12 +467,15 @@ class EncoderDecoderModel(PreTrainedModel):
             encoder_hidden_states=encoder_hidden_states,
             encoder_attention_mask=attention_mask,
             inputs_embeds=decoder_inputs_embeds,
-            labels=mix_labels,#Note extra change here
+            labels=labels#mix_labels,#Note extra change here
             output_attentions=output_attentions,
             output_hidden_states=output_hidden_states,
             return_dict=return_dict,
             **kwargs_decoder,
         )
+
+        print("Decoder outputs: " + str(decoder_outputs))
+        
         '''
         #extra stuff starts
         logits = self.classifier(encoder_outputs[1])
