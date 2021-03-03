@@ -459,7 +459,9 @@ class EncoderDecoderModel(PreTrainedModel):
         pooled_output = self.apply_mask(pooled_output)
         print("Pooled output after mixup: " + str(pooled_output))
         #Extra stuff ends
+        encoder_outputs = list(encoder_outputs)
         encoder_outputs[1] = pooled_output
+        encoder_outputs = tuple(encoder_outputs)
 
         # Decode
         decoder_outputs = self.decoder(
