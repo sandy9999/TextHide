@@ -476,7 +476,12 @@ class EncoderDecoderModel(PreTrainedModel):
 
         print("Decoder outputs: " + str(decoder_outputs))
         print("Decoder + Encoder outputs: " + str(decoder_outputs + encoder_outputs))
+        print("Type of decoder outputs part 1: " + str(type((decoder_outputs + encoder_outputs)[0])))
+        print("Type of decoder outputs part 2: " + str(type((decoder_outputs + encoder_outputs)[1])))
+        #print(type((decoder_outputs + encoder_outputs)[2]))
+        #print(type((decoder_outputs + encoder_outputs)[3]))
         print((decoder_outputs + encoder_outputs)[0] == decoder_outputs)
+        
 
         '''
         #extra stuff starts
