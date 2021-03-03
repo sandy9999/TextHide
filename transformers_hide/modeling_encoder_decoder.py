@@ -482,7 +482,7 @@ class EncoderDecoderModel(PreTrainedModel):
         #print(type((decoder_outputs + encoder_outputs)[3]))
         print((decoder_outputs + encoder_outputs)[0] == decoder_outputs[0])
         print((decoder_outputs + encoder_outputs)[1] == decoder_outputs[1])
-        print((decoder_outputs + encoder_outputs)[2] == encoder_outputs[1])
+        print((decoder_outputs + encoder_outputs)[2] == encoder_outputs[0])
         print((decoder_outputs + encoder_outputs)[3] == encoder_outputs[1])
 
         '''
