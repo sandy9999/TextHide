@@ -450,15 +450,16 @@ class EncoderDecoderModel(PreTrainedModel):
         print("Encoder hidden states: " + str(encoder_hidden_states))
         print("Shape of encoder hidden states: " + str(encoder_hidden_states.shape))
 
-        '''
+        
         #Extra stuff starts
         if labels is not None:
-            encoder_outputs[1], mix_labels, lams = mixup(
+            pooled_output, mix_labels, lams = mixup(
                 encoder_outputs[1], labels, k=self.num_k)
 
-        encoder_outputs[1] = self.apply_mask(encoder_outputs[1])
+        pooled_output = self.apply_mask(pooled_output)
+        print("Pooled output after mixup: " + str(pooled_output))
         #Extra stuff ends
-        '''
+        
 
         # Decode
         decoder_outputs = self.decoder(
