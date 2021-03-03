@@ -476,7 +476,7 @@ class EncoderDecoderModel(PreTrainedModel):
 
         print("Decoder outputs: " + str(decoder_outputs))
         print("Decoder + Encoder outputs: " + str(decoder_outputs + encoder_outputs))
-        print(type(decoder_outputs + encoder_outputs))
+        print((decoder_outputs + encoder_outputs)[0] == decoder_outputs)
 
         '''
         #extra stuff starts
