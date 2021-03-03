@@ -459,7 +459,7 @@ class EncoderDecoderModel(PreTrainedModel):
         pooled_output = self.apply_mask(pooled_output)
         print("Pooled output after mixup: " + str(pooled_output))
         #Extra stuff ends
-        
+        encoder_outputs[1] = pooled_output
 
         # Decode
         decoder_outputs = self.decoder(
@@ -505,7 +505,7 @@ class EncoderDecoderModel(PreTrainedModel):
         '''
 
         if not return_dict:
-            return decoder_outputs + encoder_outputs[0] + pooled_output #the new encoder_outputs
+            return decoder_outputs + encoder_outputs #the new encoder_outputs
 
         return Seq2SeqLMOutput(
             loss=decoder_outputs.loss,
