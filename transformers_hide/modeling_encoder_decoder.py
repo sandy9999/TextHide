@@ -505,7 +505,7 @@ class EncoderDecoderModel(PreTrainedModel):
         '''
 
         if not return_dict:
-            return decoder_outputs + encoder_outputs #the new encoder_outputs
+            return decoder_outputs + encoder_outputs[0] + pooled_output #the new encoder_outputs
 
         return Seq2SeqLMOutput(
             loss=decoder_outputs.loss,
