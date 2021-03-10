@@ -1111,6 +1111,28 @@ class BertLMHeadModel(BertPreTrainedModel):
 
 @add_start_docstrings("""Bert Model with a `language modeling` head on top. """, BERT_START_DOCSTRING)
 class BertForMaskedLM(BertPreTrainedModel):
+
+    def generate_mask_pool(self):
+        if self.num_sigma <= 0:
+            return
+        np.random.seed(7)
+        size = [self.num_sigma, 768]
+        self.mask_pool = torch.randint(2, size=size) * 2 - 1
+
+    def apply_mask(self, input_ids):
+        if self.num_sigma == 0:
+            return input_ids
+        elif self.num_sigma == -1:
+            mask_pad = torch.randint(
+                2, size=input_ids.shape) * 2 - 1       # Random sign
+            input_ids = input_ids * mask_pad.float().to(device)
+        else:
+            l = len(input_ids)
+            lst = np.random.randint(self.num_sigma, size=l)
+            mask_pad = torch.stack([self.mask_pool[i] for i in lst]).to(device)
+            input_ids = input_ids * mask_pad.float()
+        return input_ids
+
     def __init__(self, config):
         super().__init__(config)
 
@@ -1121,9 +1143,17 @@ class BertForMaskedLM(BertPreTrainedModel):
             )
 
         self.bert = BertModel(config)
+
+        #For TextHide
+        self.num_sigma = config.num_sigma
+        self.num_k = config.num_k
+        self.small_cls = config.small_cls
+
         self.cls = BertOnlyMLMHead(config)
 
         self.init_weights()
+        self.generate_mask_pool()
+        print('TextHide in BertForMaskedLM parameters:', self.num_sigma, self.num_k)
 
     def get_output_embeddings(self):
         return self.cls.predictions.decoder
@@ -1187,13 +1217,25 @@ class BertForMaskedLM(BertPreTrainedModel):
         )
 
         sequence_output = outputs[0]
+
+        #Inter Text Hide support None for now
+        sequence_output_pub = None
+
+        #TextHide specific
+        if labels is not None:
+            sequence_output, mix_labels, lams = mixup(
+                sequence_output, labels, k=self.num_k, embeds_help=pooled_output_pub)
+
+        pooled_output = self.apply_mask(pooled_output)
+
+
         prediction_scores = self.cls(sequence_output)
 
         masked_lm_loss = None
         if labels is not None:
             loss_fct = CrossEntropyLoss()  # -100 index = padding token
-            masked_lm_loss = loss_fct(
-                prediction_scores.view(-1, self.config.vocab_size), labels.view(-1))
+            masked_lm_loss = mixup_criterion(
+                loss_fct, prediction_scores, mix_labels, lams, self.num_labels)
 
         if not return_dict:
             output = (prediction_scores,) + outputs[2:]
