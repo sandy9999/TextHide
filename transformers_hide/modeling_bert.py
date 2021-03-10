@@ -1141,7 +1141,7 @@ class BertForMaskedLM(BertPreTrainedModel):
                 "If you want to use `BertForMaskedLM` make sure `config.is_decoder=False` for "
                 "bi-directional self-attention."
             )
-
+        self.num_labels = config.num_labels
         self.bert = BertModel(config)
 
         #For TextHide
