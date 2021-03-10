@@ -1237,7 +1237,7 @@ class BertForMaskedLM(BertPreTrainedModel):
         if labels is not None:
             loss_fct = CrossEntropyLoss()  # -100 index = padding token
             masked_lm_loss = mixup_criterion(
-                loss_fct, prediction_scores, mix_labels, lams, self.num_labels)
+                loss_fct, prediction_scores, mix_labels, lams, self.config.vocab_size)
 
         if not return_dict:
             output = (prediction_scores,) + outputs[2:]
