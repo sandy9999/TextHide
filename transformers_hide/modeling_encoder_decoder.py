@@ -410,6 +410,8 @@ class EncoderDecoderModel(PreTrainedModel):
                 **kwargs_encoder,
             )
 
+        encoder_hidden_states = encoder_outputs[0]
+
         # Decode
         decoder_outputs = self.decoder(
             input_ids=decoder_input_ids,
