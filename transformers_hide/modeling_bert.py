@@ -1224,9 +1224,9 @@ class BertForMaskedLM(BertPreTrainedModel):
         #TextHide specific
         if labels is not None:
             sequence_output, mix_labels, lams = mixup(
-                sequence_output, labels, k=self.num_k, embeds_help=pooled_output_pub)
+                sequence_output, labels, k=self.num_k, embeds_help=sequence_output_pub)
 
-        pooled_output = self.apply_mask(pooled_output)
+        sequence_output = self.apply_mask(sequence_output)
 
 
         prediction_scores = self.cls(sequence_output)
