@@ -34,6 +34,9 @@ def mixup_criterion(criterion, pred, ys, lam_batch, num_classes):
             mixy += vec_mul_ten(lam_batch[:, i], ys_onehot[i])
         l = cross_entropy_for_onehot(pred, mixy)
     else:
+        print("No. of classes: " + str(num_classes))
+        print("Shape of ys: " + str(ys.shape))
+        print("Prediction shape: " + str(pred.shape))
         mixy = vec_mul_ten(lam_batch[:, 0], ys[0])
         for i in range(1, k):
             mixy += vec_mul_ten(lam_batch[:, i], ys[i])
