@@ -6,6 +6,8 @@ device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 
 def cross_entropy_for_onehot(pred, target):
+    print("Pred in cross entropy function: " + str(pred))
+    print("Target in cross entropy function: " + str(target))
     return torch.mean(torch.sum(- target * F.log_softmax(pred, dim=-1), 1))
 
 
