@@ -15,7 +15,7 @@ def cross_entropy_for_onehot(pred, target):
 
 def label_to_onehot(target, num_classes=2):
     print("Target in label_to_onehot: " + str(target))
-    #target = torch.unsqueeze(target, 1)
+    target = torch.unsqueeze(target, 1)
     print("Target in label_to_onehot after unsqueezing: " + str(target))
     onehot_target = torch.zeros(target.size(
         0), num_classes, device=target.device)
